@@ -1,0 +1,11 @@
+{
+  "raw_rows": 13920,
+  "clean_rows": 8339,
+  "removed_rows": 5581,
+  "brands": 15,
+  "models": 22,
+  "price_min": 13500,
+  "price_max": 4929000,
+  "year_min": 1992,
+  "year_max": 2027
+}
