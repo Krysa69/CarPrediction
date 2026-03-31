@@ -1,0 +1,72 @@
+{% extends "layout.html" %}
+{% block title %}AutoScout AI – Nová analýza{% endblock %}
+{% block content %}
+<section class="card">
+  <h1>Nová analýza inzerátu</h1>
+  <p>Vyplň parametry auta. Inzerovaná cena je volitelná, ale bez ní se vypočte jen odhad tržní ceny.</p>
+  {% if error %}<div class="alert error">{{ error }}</div>{% endif %}
+  {% if not model_ready %}<div class="alert warn">Model ještě není natrénovaný. Spusť nejdřív <code>train_model.cmd</code>.</div>{% endif %}
+  <form method="post" class="form-grid">
+    <label>Značka
+      <input name="brand" list="brands" value="{{ values.brand or '' }}" required>
+    </label>
+    <label>Model
+      <input name="model" list="models" value="{{ values.model or '' }}" required>
+    </label>
+    <label>Rok výroby
+      <input type="number" name="year" value="{{ values.year or '' }}" min="1990" max="2030" required>
+    </label>
+    <label>Nájezd (km)
+      <input type="number" name="km" value="{{ values.km or '' }}" min="0" required>
+    </label>
+    <label>Výkon (kW)
+      <input type="number" name="power_kw" value="{{ values.power_kw or '' }}" min="1" required>
+    </label>
+    <label>Objem motoru (cm³)
+      <input type="number" name="engine_ccm" value="{{ values.engine_ccm or '' }}" min="0">
+    </label>
+    <label>Palivo
+      <select name="fuel">
+        {% for item in metadata.fuels %}
+        <option value="{{ item }}" {% if values.fuel == item %}selected{% endif %}>{{ item }}</option>
+        {% endfor %}
+      </select>
+    </label>
+    <label>Převodovka
+      <select name="transmission">
+        {% for item in metadata.transmissions %}
+        <option value="{{ item }}" {% if values.transmission == item %}selected{% endif %}>{{ item }}</option>
+        {% endfor %}
+      </select>
+    </label>
+    <label>Karoserie
+      <select name="body_type">
+        {% for item in metadata.body_types %}
+        <option value="{{ item }}" {% if values.body_type == item %}selected{% endif %}>{{ item }}</option>
+        {% endfor %}
+      </select>
+    </label>
+    <label>Počet dveří
+      <input type="number" name="doors" value="{{ values.doors or '' }}" min="1" max="6">
+    </label>
+    <label>Počet míst
+      <input type="number" name="seats" value="{{ values.seats or '' }}" min="1" max="9">
+    </label>
+    <label>Počet majitelů
+      <input type="number" name="owners_count" value="{{ values.owners_count or '' }}" min="1" max="10">
+    </label>
+    <label class="full">Inzerovaná cena (Kč)
+      <input type="number" name="listed_price" value="{{ values.listed_price or '' }}" min="0">
+    </label>
+    <div class="full">
+      <button class="button primary" type="submit">Vyhodnotit nabídku</button>
+    </div>
+  </form>
+  <datalist id="brands">
+    {% for item in metadata.brands %}<option value="{{ item }}">{% endfor %}
+  </datalist>
+  <datalist id="models">
+    {% for item in metadata.models %}<option value="{{ item }}">{% endfor %}
+  </datalist>
+</section>
+{% endblock %}

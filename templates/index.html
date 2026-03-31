@@ -1,0 +1,50 @@
+{% extends "layout.html" %}
+{% block title %}AutoScout AI – Domů{% endblock %}
+{% block content %}
+<section class="hero card">
+  <h1>Detekce výhodných a podezřelých inzerátů ojetých aut</h1>
+  <p>
+    Aplikace odhaduje obvyklou tržní cenu vozidla podle parametrů získaných z reálných inzerátů.
+    Pokud zadáš i inzerovanou cenu, systém vyhodnotí, jestli jde o běžnou, drahou nebo podezřele levnou nabídku.
+  </p>
+  <div class="cta-row">
+    <a class="button primary" href="{{ url_for('analyze') }}">Spustit analýzu</a>
+    <a class="button secondary" href="{{ url_for('about') }}">Zobrazit technické informace</a>
+  </div>
+</section>
+
+<section class="grid-2">
+  <article class="card">
+    <h2>Stav aplikace</h2>
+    {% if model_ready %}
+      <p class="ok">Model je natrénovaný a připravený k použití.</p>
+      {% if metadata.dataset_rows %}<p><strong>Počet záznamů v datasetu:</strong> {{ metadata.dataset_rows }}</p>{% endif %}
+      {% if metadata.trained_at %}<p><strong>Natrénováno:</strong> {{ metadata.trained_at }}</p>{% endif %}
+    {% else %}
+      <p class="warn">Model zatím není natrénovaný. Nejdřív vlož vlastní CSV a spusť trénování.</p>
+    {% endif %}
+  </article>
+  <article class="card">
+    <h2>Vyhodnocované vstupy</h2>
+    <ul>
+      <li>značka a model</li>
+      <li>rok výroby</li>
+      <li>nájezd v km</li>
+      <li>výkon v kW</li>
+      <li>palivo, převodovka a karoserie</li>
+      <li>volitelně i inzerovaná cena</li>
+    </ul>
+  </article>
+</section>
+
+{% if metadata.metrics %}
+<section class="card">
+  <h2>Základní metriky modelu</h2>
+  <div class="metrics-row">
+    <div class="metric"><span>MAE</span><strong>{{ "%.0f"|format(metadata.metrics.mae) }} Kč</strong></div>
+    <div class="metric"><span>RMSE</span><strong>{{ "%.0f"|format(metadata.metrics.rmse) }} Kč</strong></div>
+    <div class="metric"><span>R²</span><strong>{{ "%.3f"|format(metadata.metrics.r2) }}</strong></div>
+  </div>
+</section>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+{% block title %}AutoScout AI – O projektu{% endblock %}
+{% block content %}
+<section class="card">
+  <h1>O projektu</h1>
+  <p>
+    AutoScout AI je lokální aplikace pro odhad obvyklé tržní ceny ojetého vozidla a pro vyhodnocení,
+    zda je konkrétní inzerát spíše výhodný, běžný, drahý nebo podezřelý.
+  </p>
+  <h2>Proces zpracování</h2>
+  <ol>
+    <li>Vlastním crawlerem se sesbírají reálná data z inzerátů.</li>
+    <li>Dataset se vyčistí, deduplikuje a doplní o odvozené atributy.</li>
+    <li>Následně se natrénuje regresní model pro odhad ceny.</li>
+    <li>Nad odhadem běží aplikační logika, která posuzuje výhodnost nabídky.</li>
+  </ol>
+  {% if metadata.metrics %}
+  <h2>Metriky modelu</h2>
+  <ul>
+    <li>MAE: {{ "%.0f"|format(metadata.metrics.mae) }} Kč</li>
+    <li>RMSE: {{ "%.0f"|format(metadata.metrics.rmse) }} Kč</li>
+    <li>R²: {{ "%.3f"|format(metadata.metrics.r2) }}</li>
+  </ul>
+  {% endif %}
+</section>
+{% endblock %}

@@ -1,0 +1,9 @@
+{% extends "layout.html" %}
+{% block title %}AutoScout AI – Chyba{% endblock %}
+{% block content %}
+<section class="card">
+  <h1>{{ title }}</h1>
+  <p>{{ message }}</p>
+  <a class="button secondary" href="{{ url_for('index') }}">Zpět na úvod</a>
+</section>
+{% endblock %}

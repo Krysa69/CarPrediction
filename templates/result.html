@@ -1,0 +1,63 @@
+{% extends "layout.html" %}
+{% block title %}AutoScout AI – Výsledek{% endblock %}
+{% block content %}
+<section class="card">
+  <h1>Výsledek analýzy</h1>
+  <div class="result-grid">
+    <div class="result-box">
+      <span>Odhad tržní ceny</span>
+      <strong>{{ "{:,.0f}".format(result.predicted_price).replace(",", " ") }} Kč</strong>
+    </div>
+    <div class="result-box">
+      <span>Verdikt</span>
+      <strong>{{ result.verdict }}</strong>
+    </div>
+    <div class="result-box">
+      <span>Důvěryhodnost odhadu</span>
+      <strong>{{ result.confidence }}</strong>
+    </div>
+    {% if result.listed_price is not none %}
+    <div class="result-box">
+      <span>Inzerovaná cena</span>
+      <strong>{{ "{:,.0f}".format(result.listed_price).replace(",", " ") }} Kč</strong>
+    </div>
+    {% endif %}
+  </div>
+
+  {% if result.delta is not none %}
+  <div class="card inset">
+    <h2>Porovnání s inzerátem</h2>
+    <p><strong>Rozdíl:</strong> {{ "{:+,.0f}".format(result.delta).replace(",", " ") }} Kč</p>
+    <p><strong>Odchylka:</strong> {{ result.delta_pct }} %</p>
+  </div>
+  {% endif %}
+
+  <div class="card inset">
+    <h2>Zdůvodnění</h2>
+    <ul>
+      {% for reason in result.reasons %}
+      <li>{{ reason }}</li>
+      {% endfor %}
+    </ul>
+  </div>
+
+  <div class="card inset">
+    <h2>Zadané parametry</h2>
+    <div class="mini-grid">
+      <div><strong>Značka:</strong> {{ values.brand }}</div>
+      <div><strong>Model:</strong> {{ values.model }}</div>
+      <div><strong>Rok:</strong> {{ values.year }}</div>
+      <div><strong>Nájezd:</strong> {{ values.km }} km</div>
+      <div><strong>Výkon:</strong> {{ values.power_kw }} kW</div>
+      <div><strong>Palivo:</strong> {{ values.fuel }}</div>
+      <div><strong>Převodovka:</strong> {{ values.transmission }}</div>
+      <div><strong>Karoserie:</strong> {{ values.body_type }}</div>
+    </div>
+  </div>
+
+  <div class="cta-row">
+    <a class="button secondary" href="{{ url_for('analyze') }}">Nová analýza</a>
+    <a class="button secondary" href="{{ url_for('about') }}">Technické info</a>
+  </div>
+</section>
+{% endblock %}

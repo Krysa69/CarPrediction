@@ -1,0 +1,19 @@
+Tato složka slouží k oddělení cizího kódu a knihoven třetích stran od autorského kódu projektu.
+
+Použité externí knihovny:
+- Flask
+- pandas
+- scikit-learn
+- joblib
+- requests
+- beautifulsoup4
+- lxml
+
+Samotný autorský kód projektu je uložen v souborech:
+- app.py
+- preprocess.py
+- train_model.py
+- predict.py
+- templates/*
+- static/*
+- docs/*
